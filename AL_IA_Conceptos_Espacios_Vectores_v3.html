@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espacios Vectoriales - Matemáticas e IA</title>
+    <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
+    <style>
+        body {
+            padding: 20px;
+            font-family: 'Press Start 2P', cursive;
+            background-color: #F0EAD6;
+            color: #212529;
+            font-size: 16px;
+        }
+
+        .generalTitle {
+            color: #000000;
+            text-align: center;
+            margin: -2rem auto 1rem;
+            padding-top: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        #sidebar {
+            background-color: #ffcccb;
+            padding: 15px;
+            border: 4px solid #212529;
+            margin-bottom: 20px;
+        }
+
+        #content {
+            background-color: #fff;
+            padding: 20px;
+            border: 4px solid #212529;
+        }
+
+        #conceptList {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        #conceptList li {
+            flex-grow: 1;
+            padding: 8px;
+            background-color: #92cc41;
+            color: #fff;
+            border: 2px solid #4aa52e;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #209cee;
+            font-size: 1.2rem;
+        }
+
+        .nes-btn {
+            margin: 5px;
+            font-size: 0.8rem;
+        }
+
+        .nes-container {
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+
+            #sidebar {
+                flex: 1;
+            }
+
+            #content {
+                flex: 2;
+            }
+
+            .generalTitle {
+                font-size: 2rem;
+            }
+
+            #conceptList {
+                flex-direction: column;
+            }
+
+            #conceptList li {
+                font-size: 1rem;
+            }
+
+            h1,
+            h2,
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            .nes-btn {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nes-container with-title is-centered">
+        <p class="generalTitle">Espacios Vectoriales - Matemáticas e IA</p>
+        <div class="container">
+            <div id="sidebar" class="nes-container with-title is-centered">
+                <p class="title">Conceptos</p>
+                <ul id="conceptList"></ul>
+            </div>
+            <div id="content" class="nes-container with-title is-centered">
+                <p class="title">Información del Concepto</p>
+                <p>Seleccione un concepto del menú para ver su información.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        const conceptContents = { "Espacio Vectorial": { concepto: "Un espacio vectorial es una estructura algebraica que consiste en un conjunto de elementos llamados vectores, junto con operaciones de suma y multiplicación por escalares que cumplen ciertas propiedades.", ejemplo: "El conjunto de todos los vectores en 3D (R³) forma un espacio vectorial. Por ejemplo, (1,2,3), (-2,0,4), y (0,0,0) son vectores en este espacio.", aplicacion: "En aprendizaje automático, los espacios vectoriales se utilizan para representar características de datos. Por ejemplo, en procesamiento de lenguaje natural, las palabras o frases se representan como vectores en un espacio de alta dimensión." }, Vectores: { concepto: "Los vectores son los elementos fundamentales de un espacio vectorial. Pueden representar magnitudes con dirección o conjuntos ordenados de números.", ejemplo: "En un espacio 2D, un vector podría ser (3,4), representando 3 unidades en dirección x y 4 en dirección y.", aplicacion: "En redes neuronales, las entradas, salidas y pesos se representan como vectores. Por ejemplo, la imagen de un dígito escrito a mano puede representarse como un vector de píxeles." }, Operaciones: { concepto: "Las operaciones fundamentales en espacios vectoriales son la suma de vectores y la multiplicación por escalares.", ejemplo: "Suma de vectores: (1,2) + (3,4) = (4,6). Multiplicación por escalar: 2 * (1,2) = (2,4).", aplicacion: "En el entrenamiento de modelos de IA, estas operaciones son cruciales. Por ejemplo, en el descenso de gradiente, se suman vectores de parámetros y se multiplican por tasas de aprendizaje (escalares)." }, Propiedades: { concepto: "Los espacios vectoriales tienen propiedades como asociatividad, conmutatividad, existencia de elemento neutro e inverso para la suma, y distributividad de la multiplicación escalar sobre la suma.", ejemplo: "Conmutatividad de la suma: u + v = v + u para cualesquiera vectores u y v.", aplicacion: "Estas propiedades garantizan la consistencia y estabilidad de los algoritmos de IA. Por ejemplo, permiten simplificar cálculos en redes neuronales y aseguran que el orden de las operaciones no afecte el resultado final." }, Transformaciones: { concepto: "Las transformaciones son funciones que mapean vectores de un espacio vectorial a otro, posiblemente el mismo.", ejemplo: "Una rotación en 2D: T(x,y) = (y,-x) rota un vector 90 grados en sentido antihorario.", aplicacion: "En redes neuronales, cada capa realiza una transformación. Por ejemplo, una capa densa aplica una transformación lineal seguida de una función de activación no lineal." }, Generador: { concepto: "Un conjunto generador de un espacio vectorial es un conjunto de vectores a partir de los cuales se puede obtener cualquier vector del espacio mediante combinaciones lineales.", ejemplo: "En R², los vectores (1,0) y (0,1) generan todo el espacio, ya que cualquier vector (a,b) puede escribirse como a*(1,0) + b*(0,1).", aplicacion: "En aprendizaje de representaciones, se buscan conjuntos generadores eficientes para representar datos complejos en espacios de menor dimensión." }, Base: { concepto: "Una base es un conjunto generador linealmente independiente. Es el conjunto más pequeño de vectores que puede generar todo el espacio.", ejemplo: "En R³, los vectores (1,0,0), (0,1,0), y (0,0,1) forman una base estándar.", aplicacion: "En el análisis de componentes principales (PCA), se busca una nueva base que represente mejor la variabilidad de los datos, facilitando la reducción de dimensionalidad." }, Span: { concepto: "El span de un conjunto de vectores es el conjunto de todas las combinaciones lineales posibles de esos vectores.", ejemplo: "El span de los vectores (1,0) y (0,1) en R² es todo R², mientras que el span de (1,1) solo es la línea y=x.", aplicacion: "En el diseño de arquitecturas de redes neuronales, se considera el span de las capas para asegurar que el modelo pueda representar adecuadamente el espacio de soluciones del problema." }, "Independencia/Dependencia Lineal": { concepto: "Un conjunto de vectores es linealmente independiente si ninguno de ellos puede expresarse como combinación lineal de los otros. En caso contrario, son linealmente dependientes.", ejemplo: "Los vectores (1,0) y (0,1) son linealmente independientes, pero (1,0), (0,1), y (1,1) son linealmente dependientes, ya que (1,1) = (1,0) + (0,1).", aplicacion: "En el entrenamiento de modelos de IA, la independencia lineal de las características de entrada es importante para evitar multicolinealidad y mejorar la estabilidad del modelo." }, "Suma Vectorial": { concepto: "La suma vectorial es una operación que combina dos vectores para producir un nuevo vector, sumando sus componentes correspondientes.", ejemplo: "En R², (3,4) + (1,2) = (4,6).", aplicacion: "En el algoritmo de retropropagación de redes neuronales, los gradientes se suman vectorialmente para actualizar los pesos de la red." }, "Multiplicación por escalar": { concepto: "La multiplicación por escalar es una operación que multiplica cada componente de un vector por un número (escalar).", ejemplo: "En R³, 2 * (1,2,3) = (2,4,6).", aplicacion: "En el aprendizaje por refuerzo, la multiplicación por escalar se usa para ajustar la magnitud de las actualizaciones de política basadas en la tasa de aprendizaje." }, "Producto Interno": { concepto: "El producto interno es una operación que toma dos vectores y produce un escalar, generalmente relacionado con la noción de ángulo entre vectores.", ejemplo: "En R², el producto interno estándar de (a,b) y (c,d) es ac + bd.", aplicacion: "En el aprendizaje automático, el producto interno se usa en kernels para SVM y en la atención en modelos de lenguaje, midiendo similaridad entre vectores." }, Dimensión: { concepto: "La dimensión de un espacio vectorial es el número de vectores en cualquiera de sus bases.", ejemplo: "R² tiene dimensión 2, R³ tiene dimensión 3.", aplicacion: "En el aprendizaje profundo, la dimensión de las capas ocultas afecta la capacidad del modelo para aprender representaciones complejas." }, Rango: { concepto: "El rango de una transformación lineal es la dimensión de su imagen, es decir, el número de vectores linealmente independientes en el resultado de la transformación.", ejemplo: "Una proyección en un plano en R³ tiene rango 2.", aplicacion: "En el análisis de datos, el rango de una matriz de características indica cuánta información independiente contienen realmente los datos." }, Ortogonalidad: { concepto: "Dos vectores son ortogonales si su producto interno es cero. Geométricamente, significa que son perpendiculares.", ejemplo: "En R², (1,0) y (0,1) son ortogonales.", aplicacion: "En el procesamiento de señales y aprendizaje automático, la ortogonalidad se usa para crear representaciones eficientes y no redundantes de datos." }, "Transformación lineal": { concepto: "Una transformación lineal es una función entre espacios vectoriales que preserva las operaciones de suma vectorial y multiplicación por escalar.", ejemplo: "La rotación, reflexión, y proyección son ejemplos de transformaciones lineales.", aplicacion: "En redes neuronales, las capas densas realizan transformaciones lineales antes de aplicar funciones de activación no lineales." }, "Núcleo (Kernel)": { concepto: "El núcleo de una transformación lineal es el conjunto de todos los vectores que la transformación mapea al vector cero.", ejemplo: "Para la transformación T(x,y) = (x+y, x+y), el núcleo es la línea y = -x.", aplicacion: "En máquinas de vectores de soporte (SVM), el truco del kernel utiliza implícitamente el concepto de núcleo para realizar clasificaciones en espacios de alta dimensión." }, Imagen: { concepto: "La imagen de una transformación lineal es el conjunto de todos los vectores que resultan de aplicar la transformación a los vectores del espacio de entrada.", ejemplo: "Para la transformación T(x,y,z) = (x+y, x-y), la imagen es un plano en R².", aplicacion: "En el análisis de componentes principales (PCA), la imagen de la transformación representa el subespacio que mejor captura la variabilidad de los datos." }, Proyección: { concepto: "Una proyección es una transformación lineal que mapea vectores a un subespacio y es idempotente (aplicarla dos veces da el mismo resultado que aplicarla una vez).", ejemplo: "La proyección de (x,y,z) en el plano xy es (x,y,0).", aplicacion: "En el procesamiento de señales y aprendizaje automático, las proyecciones se usan para reducir dimensionalidad y extraer características relevantes." }, "Autovalores/Autovectores": { concepto: "Los autovectores de una transformación lineal son vectores no nulos que, cuando se les aplica la transformación, resultan en un múltiplo escalar de sí mismos. Los autovalores son estos múltiplos escalares.", ejemplo: "Para la matriz de rotación de 90 grados [[0,-1],[1,0]], i y -i son autovalores, y sus autovectores correspondientes son (1,i) y (1,-i).", aplicacion: "En el aprendizaje de máquina, los autovalores y autovectores se usan en PCA para encontrar las direcciones de máxima varianza en los datos, y en el análisis espectral de grafos para clustering y embedding." } };
+
+        const concepts = [
+            { name: "Espacio Vectorial", color: "#3F51B5", textColor: "#FFFFFF" },
+            { name: "Vectores", color: "#009688", textColor: "#FFFFFF" },
+            { name: "Operaciones", color: "#FF5722", textColor: "#FFFFFF" },
+            { name: "Propiedades", color: "#FFC107", textColor: "#000000" },
+            { name: "Transformaciones", color: "#9C27B0", textColor: "#FFFFFF" },
+            { name: "Generador", color: "#2196F3", textColor: "#FFFFFF" },
+            { name: "Base", color: "#4CAF50", textColor: "#FFFFFF" },
+            { name: "Span", color: "#E91E63", textColor: "#FFFFFF" },
+            { name: "Independencia/Dependencia Lineal", color: "#795548", textColor: "#FFFFFF" },
+            { name: "Suma Vectorial", color: "#607D8B", textColor: "#FFFFFF" },
+            { name: "Multiplicación por escalar", color: "#F44336", textColor: "#FFFFFF" },
+            { name: "Producto Interno", color: "#CDDC39", textColor: "#000000" },
+            { name: "Dimensión", color: "#00BCD4", textColor: "#000000" },
+            { name: "Rango", color: "#FF9800", textColor: "#000000" },
+            { name: "Ortogonalidad", color: "#9E9E9E", textColor: "#000000" },
+            { name: "Transformación lineal", color: "#673AB7", textColor: "#FFFFFF" },
+            { name: "Núcleo (Kernel)", color: "#8BC34A", textColor: "#000000" },
+            { name: "Imagen", color: "#03A9F4", textColor: "#000000" },
+            { name: "Proyección", color: "#FF4081", textColor: "#FFFFFF" },
+            { name: "Autovalores/Autovectores", color: "#FF5252", textColor: "#FFFFFF" }
+        ];
+        const conceptList = document.getElementById('conceptList');
+        const content = document.getElementById('content');
+        concepts.forEach(concept => {
+            const li = document.createElement('li');
+            const button = document.createElement('button');
+            button.textContent = concept.name;
+            button.classList.add('nes-btn');
+            button.style.backgroundColor = concept.color;
+            button.style.color = concept.textColor;
+            button.addEventListener('click', () => showConceptInfo(concept));
+            li.appendChild(button);
+            conceptList.appendChild(li);
+        });
+        function showConceptInfo(concept) {
+            const conceptInfo = conceptContents[concept.name];
+            content.innerHTML = `
+        <p class="title" style="color: ${concept.color};">${concept.name}</p>
+        <div class="nes-container with-title" style="border-color: ${concept.color};">
+            <p class="title" style="background-color: ${concept.color}; color: ${concept.textColor};">Concepto</p>
+            <p>${conceptInfo.concepto}</p>
+        </div>
+        <div class="nes-container with-title" style="border-color: ${concept.color};">
+            <p class="title" style="background-color: ${concept.color}; color: ${concept.textColor};">Ejemplo</p>
+            <p>${conceptInfo.ejemplo}</p>
+        </div>
+        <div class="nes-container with-title" style="border-color: ${concept.color};">
+            <p class="title" style="background-color: ${concept.color}; color: ${concept.textColor};">Aplicación a la IA</p>
+            <p>${conceptInfo.aplicacion}</p>
+        </div>
+    `;
+        }
+
+        function scrollWithScreenSize() {
+            const isMobile = window.innerWidth < 768; // Define el ancho para considerar dispositivo móvil
+            const targetElement = isMobile ? document.getElementById('content') : null;
+
+            if (isMobile && targetElement) {
+                // En móviles, hace scroll hacia el contenido
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // En pantallas más grandes, hace scroll hacia arriba
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Agrega este event listener a cada elemento del menú
+        document.querySelectorAll('#conceptList li').forEach(item => {
+            item.addEventListener('click', scrollWithScreenSize);
+        });
+
+    </script>
+</body>
+
+</html>
