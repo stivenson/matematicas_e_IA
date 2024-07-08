@@ -23,6 +23,10 @@
             font-size: 1.5rem;
         }
 
+        .subTitle {
+            border: 1px solid black;
+        }
+
         .container {
             display: flex;
             flex-direction: column;
@@ -122,17 +126,278 @@
         <p class="generalTitle">Espacios Vectoriales - Matemáticas e IA</p>
         <div class="container">
             <div id="sidebar" class="nes-container with-title is-centered">
-                <p class="title">Conceptos</p>
+                <p class="title subTitle">Conceptos</p>
                 <ul id="conceptList"></ul>
             </div>
             <div id="content" class="nes-container with-title is-centered">
-                <p class="title">Información del Concepto</p>
-                <p>Seleccione un concepto del menú para ver su información.</p>
+                <p class="title subTitle">Información del Concepto</p>
+                <h2 style="color: #000000;">Seleccione un concepto del menú para ver su información.</h2>
+                <canvas id="handAnimation" width="400" height="400"></canvas>
+                <script>
+                    const canvas = document.getElementById('handAnimation');
+                    const ctx = canvas.getContext('2d');
+
+                    let angle = 0;
+                    let direction = 1;
+
+                    function drawHand(x, y, angle) {
+                        ctx.save();
+                        ctx.translate(x, y);
+                        ctx.rotate(angle);
+
+                        // Dibujar la palma
+                        ctx.fillStyle = '#FFD700';
+                        ctx.beginPath();
+                        ctx.arc(0, 0, 20, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Dibujar el dedo índice
+                        ctx.fillStyle = '#FFD700';
+                        ctx.beginPath();
+                        ctx.rect(-5, -40, 10, 40);
+                        ctx.fill();
+
+                        // Dibujar el pulgar
+                        ctx.fillStyle = '#FFD700';
+                        ctx.beginPath();
+                        ctx.rect(-20, -20, 20, 10);
+                        ctx.fill();
+
+                        ctx.restore();
+                    }
+
+                    function animate() {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                        // Dibujar el "botón"
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.fillRect(150, 150, 100, 50);
+                        ctx.fillStyle = '#000000';
+                        ctx.font = '20px "Press Start 2P"';
+                        ctx.fillText('', 170, 180);
+
+                        // Animar el ángulo
+                        angle += 0.05 * direction;
+                        if (angle > 0.2 || angle < -0.2) {
+                            direction *= -1;
+                        }
+
+                        // Dibujar la mano
+                        drawHand(200, 100, angle);
+
+                        requestAnimationFrame(animate);
+                    }
+
+                    animate();
+                </script>
             </div>
         </div>
     </div>
     <script>
         const conceptContents = { "Espacio Vectorial": { concepto: "Un espacio vectorial es una estructura algebraica que consiste en un conjunto de elementos llamados vectores, junto con operaciones de suma y multiplicación por escalares que cumplen ciertas propiedades.", ejemplo: "El conjunto de todos los vectores en 3D (R³) forma un espacio vectorial. Por ejemplo, (1,2,3), (-2,0,4), y (0,0,0) son vectores en este espacio.", aplicacion: "En aprendizaje automático, los espacios vectoriales se utilizan para representar características de datos. Por ejemplo, en procesamiento de lenguaje natural, las palabras o frases se representan como vectores en un espacio de alta dimensión." }, Vectores: { concepto: "Los vectores son los elementos fundamentales de un espacio vectorial. Pueden representar magnitudes con dirección o conjuntos ordenados de números.", ejemplo: "En un espacio 2D, un vector podría ser (3,4), representando 3 unidades en dirección x y 4 en dirección y.", aplicacion: "En redes neuronales, las entradas, salidas y pesos se representan como vectores. Por ejemplo, la imagen de un dígito escrito a mano puede representarse como un vector de píxeles." }, Operaciones: { concepto: "Las operaciones fundamentales en espacios vectoriales son la suma de vectores y la multiplicación por escalares.", ejemplo: "Suma de vectores: (1,2) + (3,4) = (4,6). Multiplicación por escalar: 2 * (1,2) = (2,4).", aplicacion: "En el entrenamiento de modelos de IA, estas operaciones son cruciales. Por ejemplo, en el descenso de gradiente, se suman vectores de parámetros y se multiplican por tasas de aprendizaje (escalares)." }, Propiedades: { concepto: "Los espacios vectoriales tienen propiedades como asociatividad, conmutatividad, existencia de elemento neutro e inverso para la suma, y distributividad de la multiplicación escalar sobre la suma.", ejemplo: "Conmutatividad de la suma: u + v = v + u para cualesquiera vectores u y v.", aplicacion: "Estas propiedades garantizan la consistencia y estabilidad de los algoritmos de IA. Por ejemplo, permiten simplificar cálculos en redes neuronales y aseguran que el orden de las operaciones no afecte el resultado final." }, Transformaciones: { concepto: "Las transformaciones son funciones que mapean vectores de un espacio vectorial a otro, posiblemente el mismo.", ejemplo: "Una rotación en 2D: T(x,y) = (y,-x) rota un vector 90 grados en sentido antihorario.", aplicacion: "En redes neuronales, cada capa realiza una transformación. Por ejemplo, una capa densa aplica una transformación lineal seguida de una función de activación no lineal." }, Generador: { concepto: "Un conjunto generador de un espacio vectorial es un conjunto de vectores a partir de los cuales se puede obtener cualquier vector del espacio mediante combinaciones lineales.", ejemplo: "En R², los vectores (1,0) y (0,1) generan todo el espacio, ya que cualquier vector (a,b) puede escribirse como a*(1,0) + b*(0,1).", aplicacion: "En aprendizaje de representaciones, se buscan conjuntos generadores eficientes para representar datos complejos en espacios de menor dimensión." }, Base: { concepto: "Una base es un conjunto generador linealmente independiente. Es el conjunto más pequeño de vectores que puede generar todo el espacio.", ejemplo: "En R³, los vectores (1,0,0), (0,1,0), y (0,0,1) forman una base estándar.", aplicacion: "En el análisis de componentes principales (PCA), se busca una nueva base que represente mejor la variabilidad de los datos, facilitando la reducción de dimensionalidad." }, Span: { concepto: "El span de un conjunto de vectores es el conjunto de todas las combinaciones lineales posibles de esos vectores.", ejemplo: "El span de los vectores (1,0) y (0,1) en R² es todo R², mientras que el span de (1,1) solo es la línea y=x.", aplicacion: "En el diseño de arquitecturas de redes neuronales, se considera el span de las capas para asegurar que el modelo pueda representar adecuadamente el espacio de soluciones del problema." }, "Independencia/Dependencia Lineal": { concepto: "Un conjunto de vectores es linealmente independiente si ninguno de ellos puede expresarse como combinación lineal de los otros. En caso contrario, son linealmente dependientes.", ejemplo: "Los vectores (1,0) y (0,1) son linealmente independientes, pero (1,0), (0,1), y (1,1) son linealmente dependientes, ya que (1,1) = (1,0) + (0,1).", aplicacion: "En el entrenamiento de modelos de IA, la independencia lineal de las características de entrada es importante para evitar multicolinealidad y mejorar la estabilidad del modelo." }, "Suma Vectorial": { concepto: "La suma vectorial es una operación que combina dos vectores para producir un nuevo vector, sumando sus componentes correspondientes.", ejemplo: "En R², (3,4) + (1,2) = (4,6).", aplicacion: "En el algoritmo de retropropagación de redes neuronales, los gradientes se suman vectorialmente para actualizar los pesos de la red." }, "Multiplicación por escalar": { concepto: "La multiplicación por escalar es una operación que multiplica cada componente de un vector por un número (escalar).", ejemplo: "En R³, 2 * (1,2,3) = (2,4,6).", aplicacion: "En el aprendizaje por refuerzo, la multiplicación por escalar se usa para ajustar la magnitud de las actualizaciones de política basadas en la tasa de aprendizaje." }, "Producto Interno": { concepto: "El producto interno es una operación que toma dos vectores y produce un escalar, generalmente relacionado con la noción de ángulo entre vectores.", ejemplo: "En R², el producto interno estándar de (a,b) y (c,d) es ac + bd.", aplicacion: "En el aprendizaje automático, el producto interno se usa en kernels para SVM y en la atención en modelos de lenguaje, midiendo similaridad entre vectores." }, Dimensión: { concepto: "La dimensión de un espacio vectorial es el número de vectores en cualquiera de sus bases.", ejemplo: "R² tiene dimensión 2, R³ tiene dimensión 3.", aplicacion: "En el aprendizaje profundo, la dimensión de las capas ocultas afecta la capacidad del modelo para aprender representaciones complejas." }, Rango: { concepto: "El rango de una transformación lineal es la dimensión de su imagen, es decir, el número de vectores linealmente independientes en el resultado de la transformación.", ejemplo: "Una proyección en un plano en R³ tiene rango 2.", aplicacion: "En el análisis de datos, el rango de una matriz de características indica cuánta información independiente contienen realmente los datos." }, Ortogonalidad: { concepto: "Dos vectores son ortogonales si su producto interno es cero. Geométricamente, significa que son perpendiculares.", ejemplo: "En R², (1,0) y (0,1) son ortogonales.", aplicacion: "En el procesamiento de señales y aprendizaje automático, la ortogonalidad se usa para crear representaciones eficientes y no redundantes de datos." }, "Transformación lineal": { concepto: "Una transformación lineal es una función entre espacios vectoriales que preserva las operaciones de suma vectorial y multiplicación por escalar.", ejemplo: "La rotación, reflexión, y proyección son ejemplos de transformaciones lineales.", aplicacion: "En redes neuronales, las capas densas realizan transformaciones lineales antes de aplicar funciones de activación no lineales." }, "Núcleo (Kernel)": { concepto: "El núcleo de una transformación lineal es el conjunto de todos los vectores que la transformación mapea al vector cero.", ejemplo: "Para la transformación T(x,y) = (x+y, x+y), el núcleo es la línea y = -x.", aplicacion: "En máquinas de vectores de soporte (SVM), el truco del kernel utiliza implícitamente el concepto de núcleo para realizar clasificaciones en espacios de alta dimensión." }, Imagen: { concepto: "La imagen de una transformación lineal es el conjunto de todos los vectores que resultan de aplicar la transformación a los vectores del espacio de entrada.", ejemplo: "Para la transformación T(x,y,z) = (x+y, x-y), la imagen es un plano en R².", aplicacion: "En el análisis de componentes principales (PCA), la imagen de la transformación representa el subespacio que mejor captura la variabilidad de los datos." }, Proyección: { concepto: "Una proyección es una transformación lineal que mapea vectores a un subespacio y es idempotente (aplicarla dos veces da el mismo resultado que aplicarla una vez).", ejemplo: "La proyección de (x,y,z) en el plano xy es (x,y,0).", aplicacion: "En el procesamiento de señales y aprendizaje automático, las proyecciones se usan para reducir dimensionalidad y extraer características relevantes." }, "Autovalores/Autovectores": { concepto: "Los autovectores de una transformación lineal son vectores no nulos que, cuando se les aplica la transformación, resultan en un múltiplo escalar de sí mismos. Los autovalores son estos múltiplos escalares.", ejemplo: "Para la matriz de rotación de 90 grados [[0,-1],[1,0]], i y -i son autovalores, y sus autovectores correspondientes son (1,i) y (1,-i).", aplicacion: "En el aprendizaje de máquina, los autovalores y autovectores se usan en PCA para encontrar las direcciones de máxima varianza en los datos, y en el análisis espectral de grafos para clustering y embedding." } };
+
+        const additionalInfo = {
+            "Espacio Vectorial": [
+                {
+                    title: "Linear Algebra - Vector Spaces",
+                    url: "https://www.math.ucdavis.edu/~linear/linear-guest.pdf"
+                },
+                {
+                    title: "Vector Spaces in Machine Learning",
+                    url: "https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf"
+                }
+            ],
+            "Vectores": [
+                {
+                    title: "Introduction to Vectors",
+                    url: "https://www.mathsisfun.com/algebra/vectors.html"
+                },
+                {
+                    title: "Vectors in Machine Learning",
+                    url: "https://machinelearningmastery.com/gentle-introduction-vectors-machine-learning/"
+                }
+            ],
+            "Operaciones": [
+                {
+                    title: "Vector Operations",
+                    url: "https://mathinsight.org/vector_introduction"
+                },
+                {
+                    title: "Vector Operations in Neural Networks",
+                    url: "https://www.deeplearningbook.org/contents/linear_algebra.html"
+                }
+            ],
+            "Propiedades": [
+                {
+                    title: "Properties of Vector Spaces",
+                    url: "https://www.math.ucdavis.edu/~linear/linear-guest.pdf"
+                },
+                {
+                    title: "Vector Space Properties in Machine Learning",
+                    url: "https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf"
+                }
+            ],
+            "Transformaciones": [
+                {
+                    title: "Linear Transformations",
+                    url: "https://www.khanacademy.org/math/linear-algebra/matrix-transformations"
+                },
+                {
+                    title: "Transformations in Neural Networks",
+                    url: "https://www.deeplearningbook.org/contents/linear_algebra.html"
+                }
+            ],
+            "Generador": [
+                {
+                    title: "Spanning Sets and Linear Independence",
+                    url: "https://www.math.ucdavis.edu/~linear/linear-guest.pdf"
+                },
+                {
+                    title: "Generator Sets in Machine Learning",
+                    url: "https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf"
+                }
+            ],
+            "Base": [
+                {
+                    title: "Basis of a Vector Space",
+                    url: "https://www.mathsisfun.com/algebra/basis.html"
+                },
+                {
+                    title: "Basis in Machine Learning",
+                    url: "https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf"
+                }
+            ],
+            "Span": [
+                {
+                    title: "Span of Vectors",
+                    url: "https://www.khanacademy.org/math/linear-algebra/vectors-and-spaces/span-and-linear-independence/v/linear-algebra-introduction-to-span"
+                },
+                {
+                    title: "Span in Neural Networks",
+                    url: "https://www.deeplearningbook.org/contents/linear_algebra.html"
+                }
+            ],
+            "Independencia/Dependencia Lineal": [
+                {
+                    title: "Linear Independence",
+                    url: "https://www.mathsisfun.com/algebra/vectors-linear-independence.html"
+                },
+                {
+                    title: "Linear Independence in Machine Learning",
+                    url: "https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf"
+                }
+            ],
+            "Suma Vectorial": [
+                {
+                    title: "Vector Addition",
+                    url: "https://www.mathsisfun.com/algebra/vector-adding.html"
+                },
+                {
+                    title: "Vector Addition in Neural Networks",
+                    url: "https://www.deeplearningbook.org/contents/linear_algebra.html"
+                }
+            ],
+            "Multiplicación por escalar": [
+                {
+                    title: "Scalar Multiplication",
+                    url: "https://www.mathsisfun.com/algebra/scalar-vector-matrix.html"
+                },
+                {
+                    title: "Scalar Multiplication in Machine Learning",
+                    url: "https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf"
+                }
+            ],
+            "Producto Interno": [
+                {
+                    title: "Dot Product",
+                    url: "https://www.mathsisfun.com/algebra/vectors-dot-product.html"
+                },
+                {
+                    title: "Inner Products in Machine Learning",
+                    url: "https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf"
+                }
+            ],
+            "Dimensión": [
+                {
+                    title: "Dimension of a Vector Space",
+                    url: "https://www.math.ucdavis.edu/~linear/linear-guest.pdf"
+                },
+                {
+                    title: "Dimensionality in Machine Learning",
+                    url: "https://www.deeplearningbook.org/contents/linear_algebra.html"
+                }
+            ],
+            "Rango": [
+                {
+                    title: "Rank of a Matrix",
+                    url: "https://www.mathsisfun.com/algebra/matrix-rank.html"
+                },
+                {
+                    title: "Rank in Machine Learning",
+                    url: "https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf"
+                }
+            ],
+            "Ortogonalidad": [
+                {
+                    title: "Orthogonality",
+                    url: "https://www.mathsisfun.com/algebra/vectors-orthogonal.html"
+                },
+                {
+                    title: "Orthogonality in Machine Learning",
+                    url: "https://www.deeplearningbook.org/contents/linear_algebra.html"
+                }
+            ],
+            "Transformación lineal": [
+                {
+                    title: "Linear Transformations",
+                    url: "https://www.khanacademy.org/math/linear-algebra/matrix-transformations"
+                },
+                {
+                    title: "Linear Transformations in Neural Networks",
+                    url: "https://www.deeplearningbook.org/contents/linear_algebra.html"
+                }
+            ],
+            "Núcleo (Kernel)": [
+                {
+                    title: "Kernel of a Linear Transformation",
+                    url: "https://www.math.ucdavis.edu/~linear/linear-guest.pdf"
+                },
+                {
+                    title: "Kernel Methods in Machine Learning",
+                    url: "https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf"
+                }
+            ],
+            "Imagen": [
+                {
+                    title: "Image of a Linear Transformation",
+                    url: "https://www.math.ucdavis.edu/~linear/linear-guest.pdf"
+                },
+                {
+                    title: "Image in Machine Learning",
+                    url: "https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf"
+                }
+            ],
+            "Proyección": [
+                {
+                    title: "Vector Projections",
+                    url: "https://www.mathsisfun.com/algebra/vectors-projection.html"
+                },
+                {
+                    title: "Projections in Machine Learning",
+                    url: "https://www.deeplearningbook.org/contents/linear_algebra.html"
+                }
+            ],
+            "Autovalores/Autovectores": [
+                {
+                    title: "Eigenvalues and Eigenvectors",
+                    url: "https://www.mathsisfun.com/algebra/eigenvalue.html"
+                },
+                {
+                    title: "Eigendecomposition in Machine Learning",
+                    url: "https://www.cs.cmu.edu/~zkolter/course/linalg/linalg_notes.pdf"
+                }
+            ]
+        };
 
         const concepts = [
             { name: "Espacio Vectorial", color: "#3F51B5", textColor: "#FFFFFF" },
@@ -165,27 +430,43 @@
             button.classList.add('nes-btn');
             button.style.backgroundColor = concept.color;
             button.style.color = concept.textColor;
-            button.addEventListener('click', () => showConceptInfo(concept));
+            button.addEventListener('click', () => showConceptContent(concept));
             li.appendChild(button);
             conceptList.appendChild(li);
         });
-        function showConceptInfo(concept) {
+
+        function showConceptContent(concept) {
             const conceptInfo = conceptContents[concept.name];
-            content.innerHTML = `
-        <p class="title" style="color: ${concept.color};">${concept.name}</p>
-        <div class="nes-container with-title" style="border-color: ${concept.color};">
-            <p class="title" style="background-color: ${concept.color}; color: ${concept.textColor};">Concepto</p>
-            <p>${conceptInfo.concepto}</p>
-        </div>
-        <div class="nes-container with-title" style="border-color: ${concept.color};">
-            <p class="title" style="background-color: ${concept.color}; color: ${concept.textColor};">Ejemplo</p>
-            <p>${conceptInfo.ejemplo}</p>
-        </div>
-        <div class="nes-container with-title" style="border-color: ${concept.color};">
-            <p class="title" style="background-color: ${concept.color}; color: ${concept.textColor};">Aplicación a la IA</p>
-            <p>${conceptInfo.aplicacion}</p>
-        </div>
-    `;
+            const info = additionalInfo[concept.name];
+            let html = `
+                <h2 style="color: ${concept.color};" >${concept.name}</h2>
+
+                <div class="nes-container with-title" style="border-color: ${concept.color};">
+                    <p class="title" style="background-color: ${concept.color}; color: ${concept.textColor};">Concepto</p>
+                    <p>${conceptInfo.concepto}</p>
+                </div>
+                <div class="nes-container with-title" style="border-color: ${concept.color};">
+                    <p class="title" style="background-color: ${concept.color}; color: ${concept.textColor};">Ejemplo</p>
+                    <p>${conceptInfo.ejemplo}</p>
+                </div>
+
+                <div class="nes-container with-title" style="border-color: ${concept.color};">
+                    <p class="title" style="background-color: ${concept.color}; color: ${concept.textColor};">Aplicación a la IA</p>
+                    <p>${conceptInfo.aplicacion}</p>
+                </div>
+
+                <div class="nes-container with-title">
+                    <p class="title">Más información</p>
+                    <ul style="text-align: left;">
+                        ${info.map(
+                item => `<li><a href="${item.url}" target="_blank">${item.title}</a></li>`
+            ).join('')
+                }
+                    </ul>
+                    </ul>
+                </div>
+            `;
+            document.getElementById('content').innerHTML = html;
         }
 
         function scrollWithScreenSize() {
@@ -211,5 +492,11 @@
 
     </script>
 </body>
+<footer id="footer" style="text-align: center; padding: 20px;">
+    &copy; <span id="year"></span> @stivenson. All rights reserved.
+</footer>
 
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </html>
